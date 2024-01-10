@@ -1,0 +1,52 @@
+[
+{
+  "directory": "/home/whut4/zwj/mysylar/build",
+  "command": "/usr/bin/g++ -Dsylar_EXPORTS -I/home/whut4/zwj/mysylar/.  -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g -fPIC -o CMakeFiles/sylar.dir/sylar/config.o -c /home/whut4/zwj/mysylar/sylar/config.cpp",
+  "file": "/home/whut4/zwj/mysylar/sylar/config.cpp"
+},
+{
+  "directory": "/home/whut4/zwj/mysylar/build",
+  "command": "/usr/bin/g++ -Dsylar_EXPORTS -I/home/whut4/zwj/mysylar/.  -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g -fPIC -o CMakeFiles/sylar.dir/sylar/fiber.o -c /home/whut4/zwj/mysylar/sylar/fiber.cpp",
+  "file": "/home/whut4/zwj/mysylar/sylar/fiber.cpp"
+},
+{
+  "directory": "/home/whut4/zwj/mysylar/build",
+  "command": "/usr/bin/g++ -Dsylar_EXPORTS -I/home/whut4/zwj/mysylar/.  -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g -fPIC -o CMakeFiles/sylar.dir/sylar/log.o -c /home/whut4/zwj/mysylar/sylar/log.cpp",
+  "file": "/home/whut4/zwj/mysylar/sylar/log.cpp"
+},
+{
+  "directory": "/home/whut4/zwj/mysylar/build",
+  "command": "/usr/bin/g++ -Dsylar_EXPORTS -I/home/whut4/zwj/mysylar/.  -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g -fPIC -o CMakeFiles/sylar.dir/sylar/thread.o -c /home/whut4/zwj/mysylar/sylar/thread.cpp",
+  "file": "/home/whut4/zwj/mysylar/sylar/thread.cpp"
+},
+{
+  "directory": "/home/whut4/zwj/mysylar/build",
+  "command": "/usr/bin/g++ -Dsylar_EXPORTS -I/home/whut4/zwj/mysylar/.  -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g -fPIC -o CMakeFiles/sylar.dir/sylar/util.o -c /home/whut4/zwj/mysylar/sylar/util.cpp",
+  "file": "/home/whut4/zwj/mysylar/sylar/util.cpp"
+},
+{
+  "directory": "/home/whut4/zwj/mysylar/build",
+  "command": "/usr/bin/g++ -D__FILE__=\\\"tests/test.cpp\\\" -I/home/whut4/zwj/mysylar/.  -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g -o CMakeFiles/test.dir/tests/test.o -c /home/whut4/zwj/mysylar/tests/test.cpp",
+  "file": "/home/whut4/zwj/mysylar/tests/test.cpp"
+},
+{
+  "directory": "/home/whut4/zwj/mysylar/build",
+  "command": "/usr/bin/g++ -D__FILE__=\\\"tests/test_config.cpp\\\" -I/home/whut4/zwj/mysylar/.  -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g -o CMakeFiles/test_config.dir/tests/test_config.o -c /home/whut4/zwj/mysylar/tests/test_config.cpp",
+  "file": "/home/whut4/zwj/mysylar/tests/test_config.cpp"
+},
+{
+  "directory": "/home/whut4/zwj/mysylar/build",
+  "command": "/usr/bin/g++ -D__FILE__=\\\"tests/test_thread.cpp\\\" -I/home/whut4/zwj/mysylar/.  -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g -o CMakeFiles/test_thread.dir/tests/test_thread.o -c /home/whut4/zwj/mysylar/tests/test_thread.cpp",
+  "file": "/home/whut4/zwj/mysylar/tests/test_thread.cpp"
+},
+{
+  "directory": "/home/whut4/zwj/mysylar/build",
+  "command": "/usr/bin/g++ -D__FILE__=\\\"tests/test_util.cpp\\\" -I/home/whut4/zwj/mysylar/.  -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g -o CMakeFiles/test_util.dir/tests/test_util.o -c /home/whut4/zwj/mysylar/tests/test_util.cpp",
+  "file": "/home/whut4/zwj/mysylar/tests/test_util.cpp"
+},
+{
+  "directory": "/home/whut4/zwj/mysylar/build",
+  "command": "/usr/bin/g++ -D__FILE__=\\\"tests/test_fiber.cpp\\\" -I/home/whut4/zwj/mysylar/.  -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g -o CMakeFiles/test_fiber.dir/tests/test_fiber.o -c /home/whut4/zwj/mysylar/tests/test_fiber.cpp",
+  "file": "/home/whut4/zwj/mysylar/tests/test_fiber.cpp"
+}
+]

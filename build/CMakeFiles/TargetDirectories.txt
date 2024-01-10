@@ -1,0 +1,8 @@
+/home/whut4/zwj/mysylar/build/CMakeFiles/sylar.dir
+/home/whut4/zwj/mysylar/build/CMakeFiles/test.dir
+/home/whut4/zwj/mysylar/build/CMakeFiles/test_config.dir
+/home/whut4/zwj/mysylar/build/CMakeFiles/test_thread.dir
+/home/whut4/zwj/mysylar/build/CMakeFiles/test_util.dir
+/home/whut4/zwj/mysylar/build/CMakeFiles/test_fiber.dir
+/home/whut4/zwj/mysylar/build/CMakeFiles/edit_cache.dir
+/home/whut4/zwj/mysylar/build/CMakeFiles/rebuild_cache.dir
