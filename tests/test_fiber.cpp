@@ -10,9 +10,10 @@ void run_in_fiber(){
     sylar::Fiber::YieldToHold();
     SYLAR_LOG_INFO(GetLogger())<<"run_in_fiber end";
     sylar::Fiber::YieldToHold();
-} 
+}
 
 int main(int argc,char** argv){
+    
     SYLAR_LOG_INFO(GetLogger())<<"main begin -1";
     {
         sylar::Fiber::GetThis();
@@ -23,6 +24,7 @@ int main(int argc,char** argv){
         fiber->swapIn();
         SYLAR_LOG_INFO(GetLogger())<<"main after end";
     }
+
     SYLAR_LOG_INFO(GetLogger())<<"main after end2";
     return 0;
 }

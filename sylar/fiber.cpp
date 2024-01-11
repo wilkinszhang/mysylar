@@ -42,7 +42,8 @@ Fiber::Fiber(){//主协程
         SYLAR_ASSERT2(false,"getcontext");
     }
     ++s_fiber_count;
-    SYLAR_LOG_DEBUG(GetLogger())<<"Fiber::Fiber main id="<<m_id;
+    SYLAR_LOG_DEBUG(GetLogger())<<"Fiber::Fiber main id="<<m_id
+                                <<" total="<<s_fiber_count;
 }
 
 Fiber::Fiber(std::function<void()> cb,size_t stacksize)//子协程
@@ -67,9 +68,11 @@ Fiber::Fiber(std::function<void()> cb,size_t stacksize)//子协程
 Fiber::~Fiber(){
     --s_fiber_count;
     if(m_stack){
+        std::cout<<"子协程"<<std::endl;
         SYLAR_ASSERT(m_state==TERM || m_state==INIT || m_state==EXCEPT);
         StackAllocator::Dealloc(m_stack,m_stacksize);
     }else{
+        std::cout<<"主协程"<<std::endl;
         SYLAR_ASSERT(!m_cb);
         SYLAR_ASSERT(m_state==EXEC);
 

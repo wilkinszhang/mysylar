@@ -45,6 +45,7 @@ public:
     static uint64_t GetFiberId();
 
     static void MainFunc();
+
 private:
     uint64_t m_id=0;
     uint32_t m_stacksize=0;
@@ -53,7 +54,6 @@ private:
     void* m_stack=nullptr;
     std::function<void()> m_cb;
 };
-
 
 }
 
