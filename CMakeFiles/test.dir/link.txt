@@ -1,0 +1,1 @@
+/usr/bin/c++  -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -rdynamic CMakeFiles/test.dir/tests/test.o -o bin/test  -Wl,-rpath,/workspace/mysylar/lib -lpthread lib/libsylar.so -lyaml-cpp 

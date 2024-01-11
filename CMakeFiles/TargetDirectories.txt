@@ -1,0 +1,8 @@
+/workspace/mysylar/CMakeFiles/sylar.dir
+/workspace/mysylar/CMakeFiles/test.dir
+/workspace/mysylar/CMakeFiles/test_config.dir
+/workspace/mysylar/CMakeFiles/test_thread.dir
+/workspace/mysylar/CMakeFiles/test_util.dir
+/workspace/mysylar/CMakeFiles/test_fiber.dir
+/workspace/mysylar/CMakeFiles/edit_cache.dir
+/workspace/mysylar/CMakeFiles/rebuild_cache.dir

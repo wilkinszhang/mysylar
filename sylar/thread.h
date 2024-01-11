@@ -7,6 +7,7 @@
 #include<stdint.h>
 #include<semaphore.h>
 #include<atomic>
+#include<string>
 namespace sylar
 {
 
