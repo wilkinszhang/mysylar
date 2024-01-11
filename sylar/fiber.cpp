@@ -68,11 +68,11 @@ Fiber::Fiber(std::function<void()> cb,size_t stacksize)//子协程
 Fiber::~Fiber(){
     --s_fiber_count;
     if(m_stack){
-        std::cout<<"子协程"<<std::endl;
+        std::cout<<"子协程析构"<<std::endl;
         SYLAR_ASSERT(m_state==TERM || m_state==INIT || m_state==EXCEPT);
         StackAllocator::Dealloc(m_stack,m_stacksize);
     }else{
-        std::cout<<"主协程"<<std::endl;
+        std::cout<<"主协程析构"<<std::endl;
         SYLAR_ASSERT(!m_cb);
         SYLAR_ASSERT(m_state==EXEC);
 

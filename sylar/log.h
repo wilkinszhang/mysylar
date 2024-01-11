@@ -14,7 +14,7 @@
 #define SYLAR_LOG_LEVEL(logger,level)\
     if(logger->getLevel()<=level)\
         sylar::LogEventWrap(sylar::LogEvent::ptr(new sylar::LogEvent(logger,level,__FILE__,__LINE__,0,sylar::GetThreadId(),\
-        sylar::GetFiberId(),time(0)))).getSS()
+        sylar::GetFiberId(),time(0), sylar::Thread::GetName()))).getSS()
 
 #define SYLAR_LOG_DEBUG(logger) SYLAR_LOG_LEVEL(logger,sylar::LogLevel::DEBUG)
 #define SYLAR_LOG_INFO(logger) SYLAR_LOG_LEVEL(logger,sylar::LogLevel::INFO)
@@ -30,7 +30,7 @@
     if(logger->getLevel()<=level)\
         sylar::LogEventWrap(sylar::LogEvent::ptr(new sylar::LogEvent(logger,level,\
                             __FILE__,__LINE__,0,sylar::GetThreadId(),\
-                            sylar::GetFiberId(),time(0)))).getEvent()->format(fmt,__VA_ARGS__)
+                            sylar::GetFiberId(),time(0), sylar::Thread::GetName()))).getEvent()->format(fmt,__VA_ARGS__)
 //__VA_ARGS__ 是一个特殊的预处理器标识符，用于表示宏中的可变参数。
 #define SYLAR_LOG_FMT_DEBUG(logger,fmt,...) SYLAR_LOG_FMT_LEVEL(logger,sylar::LogLevel::DEBUG,fmt,__VA_ARGS__)
 #define SYLAR_LOG_FMT_INFO(logger,fmt,...) SYLAR_LOG_FMT_LEVEL(logger,sylar::LogLevel::INFO,fmt,__VA_ARGS__)
@@ -74,19 +74,19 @@ namespace sylar{
         std::string m_threadName;
     public:
         LogEvent(std::shared_ptr<Logger> logger,LogLevel::Level level,const char* file,int32_t line,
-                uint32_t elapse,uint32_t thread_id,uint32_t fiber_id,uint64_t time);
+                uint32_t elapse,uint32_t thread_id,uint32_t fiber_id,uint64_t time,const std::string& thread_name);
         typedef std::shared_ptr<LogEvent> ptr;
-        const char * getFile(){return m_file;}
-        int32_t getLine(){return m_line;}
-        uint32_t getElapse(){return m_elapse;}
-        uint32_t getThreadId(){return m_threadId;}
-        uint32_t getFiberId(){return m_fiberId;}
-        uint64_t getTime(){return m_time;}
-        std::string getContent(){return m_ss.str();}
+        const char * getFile() const {return m_file;}
+        int32_t getLine() const {return m_line;}
+        uint32_t getElapse() const {return m_elapse;}
+        uint32_t getThreadId() const {return m_threadId;}
+        uint32_t getFiberId() const {return m_fiberId;}
+        uint64_t getTime() const {return m_time;}
+        std::string getContent() const {return m_ss.str();}
         std::stringstream& getSS(){return m_ss;}
-        std::string getThreadName(){return m_threadName;}
-        std::shared_ptr<Logger> getLogger(){return m_logger;}
-        LogLevel::Level getLevel(){return m_level;}
+        std::string getThreadName() const {return m_threadName;}
+        std::shared_ptr<Logger> getLogger() const {return m_logger;}
+        LogLevel::Level getLevel() const {return m_level;}
         void setFile(const char * file){m_file=file;}
         void setLine(int32_t line){m_line=line;}
         void setElapse(uint32_t elapse){m_elapse=elapse;}
@@ -169,7 +169,8 @@ namespace sylar{
         friend class LoggerManager;
 
     public:
-        Logger(const std::string& name = "root") : m_name(name),m_level(LogLevel::DEBUG) {
+        Logger(const std::string& name = "root") : 
+                    m_name(name),m_level(LogLevel::DEBUG) {
             m_formatter.reset(new LogFormatter("%d{%Y-%m-%d %H:%M:%S}%T%t%T%N%T%F%T[%p]%T[%c]%T%f:%l%T%m%n"));//使用reset函数而不是直接赋值，
             //是因为reset可以在赋值的同时删除原来的对象，避免内存泄漏
         }

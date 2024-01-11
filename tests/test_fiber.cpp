@@ -12,8 +12,7 @@ void run_in_fiber(){
     sylar::Fiber::YieldToHold();
 }
 
-int main(int argc,char** argv){
-    
+void test_fiber(){
     SYLAR_LOG_INFO(GetLogger())<<"main begin -1";
     {
         sylar::Fiber::GetThis();
@@ -26,5 +25,18 @@ int main(int argc,char** argv){
     }
 
     SYLAR_LOG_INFO(GetLogger())<<"main after end2";
+}
+
+int main(int argc,char** argv){
+    sylar::Thread::SetName("main");
+    
+    std::vector<sylar::Thread::ptr> thrs;
+    for(size_t i=0;i<3;++i){
+        thrs.push_back(sylar::Thread::ptr(
+            new sylar::Thread(&test_fiber,"name_"+std::to_string(i))));
+    }
+    for(auto i:thrs){
+        i->join();
+    }
     return 0;
 }
