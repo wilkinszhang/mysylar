@@ -126,7 +126,7 @@ void Scheduler::setThis(){
 }
 
 void Scheduler::run(){
-    setThis();
+    setThis();//把当前线程设置为线程段读程序
     if(sylar::GetThreadId()!=m_rootThread){
         t_scheduler_fiber=Fiber::GetThis().get();
     }
@@ -140,10 +140,11 @@ void Scheduler::run(){
         bool tickle_me=false;
         bool is_active=false;
         {
-            MutexType::Lock lock(m_mutex);
+            MutexType::Lock lock(m_mutex);//锁定任务队列m_fibers
             auto it=m_fibers.begin();
             while(it != m_fibers.end()){
                 if(it->thread!=-1 && it->thread!=sylar::GetThreadId()){
+                    //其他携程可以再其他线程运行
                     ++it;
                     tickle_me=true;
                     continue;
@@ -156,7 +157,7 @@ void Scheduler::run(){
                 }
 
                 ft=*it;
-                m_fibers.erase(it++);
+                m_fibers.erase(it++);//把当前携程从队列中删除
                 //++m_activeThreadCount;
                 is_active=true;
                 break;
@@ -172,13 +173,14 @@ void Scheduler::run(){
             //--m_activeThreadCount;
             
             if(ft.fiber->getState()==Fiber::READY){
+                //如果运行后仍处于就绪状态，则再次进行调度
                 schedule(ft.fiber);
             }else if(ft.fiber->getState()!=Fiber::TERM
                     && ft.fiber->getState()!=Fiber::EXCEPT){
                 ft.fiber->m_state=Fiber::HOLD;
             }
             ft.reset();
-        }else if(ft.cb){
+        }else if(ft.cb){//函数
             if(cb_fiber){
                 cb_fiber->reset(ft.cb);
             }else{
@@ -197,7 +199,7 @@ void Scheduler::run(){
                 cb_fiber->m_state=Fiber::HOLD;
                 cb_fiber.reset();
             }
-        }else{
+        }else{//idle携程
             if(is_active){
                 //--m_activeThreadCount;
                 continue;
@@ -215,7 +217,7 @@ void Scheduler::run(){
             }
         }
     }
-    
+
 }
 
 void Scheduler::tickle(){
