@@ -86,3 +86,8 @@
 2009	2310	1704964248	/home/whut4/zwj/mysylar/bin/test_config	b599a0d501f5d795
 3	1567	1704964516	CMakeFiles/test_fiber.dir/tests/test_fiber.o	d937f2372e98c55d
 1567	1748	1704964516	/home/whut4/zwj/mysylar/bin/test_fiber	42ac3ffb5dcd309f
+3	816	1705284125	CMakeFiles/sylar.dir/sylar/util.o	448c7846faad68e5
+4	2098	1705284126	CMakeFiles/test_util.dir/tests/test_util.o	b671d835506df947
+5	2257	1705284126	CMakeFiles/test_fiber.dir/tests/test_fiber.o	d937f2372e98c55d
+4	2312	1705284126	CMakeFiles/test_thread.dir/tests/test_thread.o	9526ac57ac82645b
+3	2614	1705284127	CMakeFiles/sylar.dir/sylar/fiber.o	6a19eea130505ae7

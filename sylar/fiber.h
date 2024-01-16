@@ -9,6 +9,7 @@
 namespace sylar{
 
 class Fiber : public std::enable_shared_from_this<Fiber>{
+friend class Scheduler;
 public:
     typedef std::shared_ptr<Fiber> ptr;
 
@@ -32,6 +33,7 @@ public:
     //切换到后台（主线程）执行
     void swapOut();
     uint64_t getId()const{return m_id;}
+    State getState()const{return m_state;}
 public:
     static void SetThis(Fiber* f);
     //返回当前线程

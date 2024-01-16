@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "/home/whut4/zwj/mysylar/bin/test"
+			"path" : "/home/whut4/zwj/mysylar/bin/test_fiber"
 		}
 	],
 	"backtrace" : 1,
@@ -30,19 +30,19 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 38,
+				"line" : 59,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 41,
+				"line" : 62,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 39,
+				"line" : 60,
 				"parent" : 0
 			},
 			{
@@ -54,7 +54,7 @@
 			{
 				"command" : 5,
 				"file" : 0,
-				"line" : 40,
+				"line" : 61,
 				"parent" : 0
 			},
 			{
@@ -78,7 +78,7 @@
 			[
 				{
 					"backtrace" : 6,
-					"define" : "__FILE__=\"tests/test.cpp\""
+					"define" : "__FILE__=\"tests/test_fiber.cpp\""
 				}
 			],
 			"includes" : 
@@ -102,7 +102,7 @@
 			"id" : "sylar::@6890427a1f51a3e7e1df"
 		}
 	],
-	"id" : "test::@6890427a1f51a3e7e1df",
+	"id" : "test_fiber::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -137,8 +137,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "test",
-	"nameOnDisk" : "test",
+	"name" : "test_fiber",
+	"nameOnDisk" : "test_fiber",
 	"paths" : 
 	{
 		"build" : ".",
@@ -152,6 +152,13 @@
 			[
 				0
 			]
+		},
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				1
+			]
 		}
 	],
 	"sources" : 
@@ -159,8 +166,13 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "tests/test.cpp",
+			"path" : "tests/test_fiber.cpp",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "sylar",
+			"sourceGroupIndex" : 1
 		}
 	],
 	"type" : "EXECUTABLE"

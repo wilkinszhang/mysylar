@@ -26,6 +26,11 @@
 },
 {
   "directory": "/home/whut4/zwj/mysylar/build",
+  "command": "/usr/bin/g++ -Dsylar_EXPORTS -I/home/whut4/zwj/mysylar/.  -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g -fPIC -o CMakeFiles/sylar.dir/sylar/scheduler.o -c /home/whut4/zwj/mysylar/sylar/scheduler.cpp",
+  "file": "/home/whut4/zwj/mysylar/sylar/scheduler.cpp"
+},
+{
+  "directory": "/home/whut4/zwj/mysylar/build",
   "command": "/usr/bin/g++ -D__FILE__=\\\"tests/test.cpp\\\" -I/home/whut4/zwj/mysylar/.  -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g -o CMakeFiles/test.dir/tests/test.o -c /home/whut4/zwj/mysylar/tests/test.cpp",
   "file": "/home/whut4/zwj/mysylar/tests/test.cpp"
 },

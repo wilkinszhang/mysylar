@@ -59,7 +59,9 @@
         "ratio": "cpp",
         "thread": "cpp",
         "bitset": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "condition_variable": "cpp",
+        "mutex": "cpp"
     },
     "cmake.parallelJobs": 12
 }

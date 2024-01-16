@@ -89,6 +89,14 @@ build CMakeFiles/sylar.dir/sylar/util.o: CXX_COMPILER__sylar_Debug /home/whut4/z
   OBJECT_DIR = CMakeFiles/sylar.dir
   OBJECT_FILE_DIR = CMakeFiles/sylar.dir/sylar
 
+build CMakeFiles/sylar.dir/sylar/scheduler.o: CXX_COMPILER__sylar_Debug /home/whut4/zwj/mysylar/sylar/scheduler.cpp || cmake_object_order_depends_target_sylar
+  DEFINES = -Dsylar_EXPORTS
+  DEP_FILE = CMakeFiles/sylar.dir/sylar/scheduler.o.d
+  FLAGS = -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g -fPIC
+  INCLUDES = -I/home/whut4/zwj/mysylar/.
+  OBJECT_DIR = CMakeFiles/sylar.dir
+  OBJECT_FILE_DIR = CMakeFiles/sylar.dir/sylar
+
 
 # =============================================================================
 # Link build statements for SHARED_LIBRARY target sylar
@@ -97,7 +105,7 @@ build CMakeFiles/sylar.dir/sylar/util.o: CXX_COMPILER__sylar_Debug /home/whut4/z
 #############################################
 # Link the shared library /home/whut4/zwj/mysylar/lib/libsylar.so
 
-build /home/whut4/zwj/mysylar/lib/libsylar.so: CXX_SHARED_LIBRARY_LINKER__sylar_Debug CMakeFiles/sylar.dir/sylar/config.o CMakeFiles/sylar.dir/sylar/fiber.o CMakeFiles/sylar.dir/sylar/log.o CMakeFiles/sylar.dir/sylar/thread.o CMakeFiles/sylar.dir/sylar/util.o
+build /home/whut4/zwj/mysylar/lib/libsylar.so: CXX_SHARED_LIBRARY_LINKER__sylar_Debug CMakeFiles/sylar.dir/sylar/config.o CMakeFiles/sylar.dir/sylar/fiber.o CMakeFiles/sylar.dir/sylar/log.o CMakeFiles/sylar.dir/sylar/thread.o CMakeFiles/sylar.dir/sylar/util.o CMakeFiles/sylar.dir/sylar/scheduler.o
   LANGUAGE_COMPILE_FLAGS = -O0 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations -fPIC -pthread -g
   OBJECT_DIR = CMakeFiles/sylar.dir
   POST_BUILD = :

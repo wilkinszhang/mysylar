@@ -22,6 +22,7 @@ set(LIB_SRC
     sylar/log.cpp
     sylar/thread.cpp
     sylar/util.cpp
+    sylar/scheduler.cpp
     )
 add_library(sylar SHARED ${LIB_SRC})
 # force_redefine_file_macro_for_sources(LIB_SRC)
