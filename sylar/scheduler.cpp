@@ -6,7 +6,7 @@
 
 namespace sylar{
 
-sylar::Logger::ptr GetLogger(){
+static sylar::Logger::ptr GetLogger(){
     static sylar::Logger::ptr logger=SYLAR_LOG_NAME("system");
     return logger;
 }
@@ -51,8 +51,15 @@ Scheduler::Scheduler(size_t threads,bool use_caller,const std::string& name)
         SYLAR_ASSERT(GetThis()==nullptr);
         t_scheduler=this;
 
+        SYLAR_LOG_INFO(GetLogger())<<"构造函数 run绑定";
         m_rootFiber.reset(new Fiber(std::bind(&Scheduler::run, this), 0, true));
+        sylar::Thread::SetName(m_name);
+
+        t_scheduler_fiber=m_rootFiber.get();
+        m_rootThread=sylar::GetThreadId();
+        m_threadIds.push_back(m_rootThread);
     }
+    m_threadCount=threads;
 }
 Scheduler::~Scheduler(){
     SYLAR_ASSERT(m_stopping);//确保调度程序执行时不会被析构
@@ -76,14 +83,20 @@ void Scheduler::start(){
     }
     m_stopping=false;
     SYLAR_ASSERT(m_threads.empty());//确保调度程序不会用上次剩余的线程
-
+    SYLAR_LOG_DEBUG(GetLogger())<<"m_threadCount="<<m_threadCount;
     m_threads.resize(m_threadCount);
+    SYLAR_LOG_INFO(GetLogger())<<"start run绑定";
     for(size_t i=0;i<m_threadCount;++i){
         m_threads[i].reset(new Thread(std::bind(&Scheduler::run,this),m_name+"_"+std::to_string(i)));
         m_threadIds.push_back(m_threads[i]->getId());
     }
     // 这会将“m_threads”向量的大小调整为“m_threadCount”中指定的线程数。 然后它为调度程序中的每个线程创建一个新的“Thread”对象。 `Thread` 对象绑定到 `Scheduler` 类的 `run()` 方法，这意味着当线程启动时，它将执行调度程序的 `run()` 方法。 每个线程的名称是调度程序的名称，后跟线程号。 然后，每个线程的 ID 存储在“m_threadIds”中。
     lock.unlock();
+
+    if(m_rootFiber){
+        m_rootFiber->swapIn();
+    }
+
 }
 void Scheduler::stop(){
     m_autoStop=true;
@@ -126,6 +139,7 @@ void Scheduler::setThis(){
 }
 
 void Scheduler::run(){
+    SYLAR_LOG_INFO(GetLogger())<<m_name<<" Scheduler::run()";
     setThis();//把当前线程设置为线程段读程序
     if(sylar::GetThreadId()!=m_rootThread){
         t_scheduler_fiber=Fiber::GetThis().get();
@@ -158,7 +172,7 @@ void Scheduler::run(){
 
                 ft=*it;
                 m_fibers.erase(it++);//把当前携程从队列中删除
-                //++m_activeThreadCount;
+                ++m_activeThreadCount;
                 is_active=true;
                 break;
             }
@@ -170,7 +184,7 @@ void Scheduler::run(){
         if(ft.fiber && (ft.fiber->getState()!=Fiber::TERM
                         ||ft.fiber->getState()!=Fiber::EXCEPT)){
             ft.fiber->swapIn();
-            //--m_activeThreadCount;
+            --m_activeThreadCount;
             
             if(ft.fiber->getState()==Fiber::READY){
                 //如果运行后仍处于就绪状态，则再次进行调度
@@ -188,7 +202,7 @@ void Scheduler::run(){
             }
             ft.reset();
             cb_fiber->swapIn();
-            //--m_activeThreadCount;
+            --m_activeThreadCount;
             if(cb_fiber->getState()==Fiber::READY){
                 schedule(cb_fiber);
                 cb_fiber.reset();
@@ -201,7 +215,7 @@ void Scheduler::run(){
             }
         }else{//idle携程
             if(is_active){
-                //--m_activeThreadCount;
+                --m_activeThreadCount;
                 continue;
             }
             if(idle_fiber->getState()==Fiber::TERM){
@@ -221,7 +235,15 @@ void Scheduler::run(){
 }
 
 void Scheduler::tickle(){
-
+    SYLAR_LOG_INFO(GetLogger())<<"tickle";
+}
+bool  Scheduler::stopping(){
+    MutexType::Lock lock(m_mutex);
+    return m_autoStop && m_stopping
+        && m_fibers.empty() && m_activeThreadCount==0;
+}
+void  Scheduler::idle(){
+    SYLAR_LOG_INFO(GetLogger())<<"idle";
 }
 
 }

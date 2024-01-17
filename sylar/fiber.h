@@ -24,12 +24,14 @@ public:
 private:
     Fiber();
 public:
-    Fiber(std::function<void()> cb,size_t stacksize=0);
+    Fiber(std::function<void()> cb,size_t stacksize=0,bool use_caller=false);
     ~Fiber();
     //重置携程函数，并重置状态
     void reset(std::function<void()> cb);
     //切换到当前携程执行
     void swapIn();
+    void call();
+    void back();
     //切换到后台（主线程）执行
     void swapOut();
     uint64_t getId()const{return m_id;}
@@ -47,6 +49,7 @@ public:
     static uint64_t GetFiberId();
 
     static void MainFunc();
+    static void CallerMainFunc();
 
 private:
     uint64_t m_id=0;

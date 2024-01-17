@@ -104,7 +104,7 @@ private:
     MutexType m_mutex;
     std::vector<Thread::ptr> m_threads;
     std::list<FiberAndThread> m_fibers;
-    Fiber::ptr m_rootFiber;
+    Fiber::ptr m_rootFiber;/// use_caller为true时有效, 调度协程
     std::string m_name;
 protected:
     std::vector<int> m_threadIds;
@@ -112,6 +112,7 @@ protected:
     bool m_stopping=true;
     bool m_autoStop=false;
     int m_rootThread=0;
+    std::atomic<size_t> m_activeThreadCount={0};
 };
 
 }

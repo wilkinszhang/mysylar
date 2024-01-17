@@ -5,8 +5,9 @@
 #include"config.h"
 #include"fiber.h"
 #include"log.h"
-#include"sylar/macro.h"
+#include"macro.h"
 #include"singleton.h"
+#include"scheduler.h"
 #include"thread.h"
 #include"util.h"
 

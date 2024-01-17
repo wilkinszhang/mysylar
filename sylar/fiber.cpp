@@ -3,10 +3,11 @@
 #include"macro.h"
 #include<atomic>
 #include"log.h"
+#include"scheduler.h"
 
 namespace sylar{
 
-Logger::ptr GetLogger(){
+static Logger::ptr GetLogger(){
     static Logger::ptr logger=SYLAR_LOG_NAME("system");
     return logger;
 }
@@ -46,7 +47,7 @@ Fiber::Fiber(){//主协程
                                 <<" total="<<s_fiber_count;
 }
 
-Fiber::Fiber(std::function<void()> cb,size_t stacksize)//子协程
+Fiber::Fiber(std::function<void()> cb,size_t stacksize,bool use_caller)//子协程
     :m_id(++s_fiber_id),m_cb(cb){
     ++s_fiber_count;
     m_stacksize=stacksize?stacksize:GetFiberStackSize()->getValue();
@@ -59,7 +60,12 @@ Fiber::Fiber(std::function<void()> cb,size_t stacksize)//子协程
     m_ctx.uc_stack.ss_sp=m_stack;
     m_ctx.uc_stack.ss_size=m_stacksize;
 
-    makecontext(&m_ctx,&Fiber::MainFunc,0);
+   
+    if(!use_caller){
+        makecontext(&m_ctx,&Fiber::MainFunc,0);
+    }else{
+        makecontext(&m_ctx,&Fiber::CallerMainFunc,0);
+    }
     SYLAR_LOG_DEBUG(GetLogger())<<"Fiber::Fiber id="<<m_id
                                 <<" total="<<s_fiber_count;
 }
@@ -100,19 +106,35 @@ void Fiber::reset(std::function<void()> cb){
     makecontext(&m_ctx,&Fiber::MainFunc,0);
     m_state=INIT;
 }
-//切换到当前携程执行
-void Fiber::swapIn(){
+
+void Fiber::call(){//将上下文从当前线程主协程切换到调用call的协程上面
     SetThis(this);
-    SYLAR_ASSERT(m_state!=EXEC);
     m_state=EXEC;
-    if(swapcontext(&t_threadFiber->m_ctx,&m_ctx)){
+    if(swapcontext(&t_threadFiber->m_ctx,&m_ctx)){//swapcontext从第一个参数切换到第二个参数
         SYLAR_ASSERT2(false,"swapcontext");
     }
 }
-//切换到后台（主线程）执行
-void Fiber::swapOut(){
+
+void Fiber::back(){//将上下文从调用back的协程切换到当前线程主协程
     SetThis(t_threadFiber.get());
     if(swapcontext(&m_ctx,&t_threadFiber->m_ctx)){
+        SYLAR_ASSERT2(false,"swapcontext");
+    }
+}
+
+//切换到当前携程执行
+void Fiber::swapIn(){//将上下文从调度程序Scheduler的主协程切换到调用swapIn的协程
+    SetThis(this);
+    SYLAR_ASSERT(m_state!=EXEC);
+    m_state=EXEC;
+    if(swapcontext(&Scheduler::GetMainFiber()->m_ctx,&m_ctx)){
+        SYLAR_ASSERT2(false,"swapcontext");      
+    }
+}
+//切换到后台（主线程）执行
+void Fiber::swapOut(){//将上下文从调用swapOut的协程切换到调度程序Scheduler的主协程
+    SetThis(t_threadFiber.get());
+    if(swapcontext(&m_ctx,&Scheduler::GetMainFiber()->m_ctx)){
         SYLAR_ASSERT2(false,"swapcontext");
     }
 }
@@ -180,6 +202,34 @@ void Fiber::MainFunc(){
     cur.reset();
     raw_ptr->swapOut();
     SYLAR_ASSERT2(false, "never reach fiber_id=" + std::to_string(raw_ptr->getId()));
+}
+
+void Fiber::CallerMainFunc() {
+    Fiber::ptr cur = GetThis();
+    SYLAR_ASSERT(cur);
+    try {
+        cur->m_cb();
+        cur->m_cb = nullptr;
+        cur->m_state = TERM;
+    } catch (std::exception& ex) {
+        cur->m_state = EXCEPT;
+        SYLAR_LOG_ERROR(GetLogger()) << "Fiber Except: " << ex.what()
+            << " fiber_id=" << cur->getId()
+            << std::endl
+            << sylar::BacktraceToString();
+    } catch (...) {
+        cur->m_state = EXCEPT;
+        SYLAR_LOG_ERROR(GetLogger()) << "Fiber Except"
+            << " fiber_id=" << cur->getId()
+            << std::endl
+            << sylar::BacktraceToString();
+    }
+
+    auto raw_ptr = cur.get();
+    cur.reset();
+    raw_ptr->back();
+    SYLAR_ASSERT2(false, "never reach fiber_id=" + std::to_string(raw_ptr->getId()));
+
 }
 
 }
