@@ -149,8 +149,9 @@ void Scheduler::setThis(){
 }
 
 void Scheduler::run(){
-    // SYLAR_LOG_INFO(GetLogger())<<m_name<<" Scheduler::run()";
+    SYLAR_LOG_INFO(GetLogger())<<"run Fiber id="<<sylar::GetFiberId();
     setThis();//把当前线程设置为线程段读程序
+    m_rootFiber->m_id;
     if(sylar::GetThreadId()!=m_rootThread){
         t_scheduler_fiber=Fiber::GetThis().get();
     }
