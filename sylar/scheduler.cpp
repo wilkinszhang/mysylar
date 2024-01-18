@@ -51,7 +51,7 @@ Scheduler::Scheduler(size_t threads,bool use_caller,const std::string& name)
         SYLAR_ASSERT(GetThis()==nullptr);
         t_scheduler=this;
 
-        SYLAR_LOG_INFO(GetLogger())<<"构造函数 run绑定";
+        // SYLAR_LOG_INFO(GetLogger())<<"构造函数 run绑定";
         m_rootFiber.reset(new Fiber(std::bind(&Scheduler::run, this), 0, true));
         sylar::Thread::SetName(m_name);
 
@@ -83,9 +83,9 @@ void Scheduler::start(){
     }
     m_stopping=false;
     SYLAR_ASSERT(m_threads.empty());//确保调度程序不会用上次剩余的线程
-    SYLAR_LOG_DEBUG(GetLogger())<<"m_threadCount="<<m_threadCount;
+    // SYLAR_LOG_DEBUG(GetLogger())<<"m_threadCount="<<m_threadCount;
     m_threads.resize(m_threadCount);
-    SYLAR_LOG_INFO(GetLogger())<<"start run绑定";
+    // SYLAR_LOG_INFO(GetLogger())<<"start run绑定";
     for(size_t i=0;i<m_threadCount;++i){
         m_threads[i].reset(new Thread(std::bind(&Scheduler::run,this),m_name+"_"+std::to_string(i)));
         m_threadIds.push_back(m_threads[i]->getId());
@@ -94,7 +94,8 @@ void Scheduler::start(){
     lock.unlock();
 
     if(m_rootFiber){
-        m_rootFiber->swapIn();
+        // m_rootFiber->swapIn();
+        m_rootFiber->call();
     }
 
 }
@@ -132,6 +133,15 @@ void Scheduler::stop(){
             m_rootFiber->call();
         }
     }
+
+    // std::vector<Thread::ptr> thrs;
+    // {
+    //     MutexType::Lock lock(m_mutex);
+    //     thrs.swap(m_threads);
+    // }
+    // for(auto & i:thrs){
+    //     i->join();
+    // }
 }
 
 void Scheduler::setThis(){
@@ -139,7 +149,7 @@ void Scheduler::setThis(){
 }
 
 void Scheduler::run(){
-    SYLAR_LOG_INFO(GetLogger())<<m_name<<" Scheduler::run()";
+    // SYLAR_LOG_INFO(GetLogger())<<m_name<<" Scheduler::run()";
     setThis();//把当前线程设置为线程段读程序
     if(sylar::GetThreadId()!=m_rootThread){
         t_scheduler_fiber=Fiber::GetThis().get();

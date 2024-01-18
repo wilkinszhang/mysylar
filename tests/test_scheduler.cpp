@@ -6,8 +6,10 @@ sylar::Logger::ptr GetLogger(){
 }
 
 int main(int argc,char** argv){
+    SYLAR_LOG_INFO(GetLogger())<<"main begin";
     sylar::Scheduler sc(1,true,"test");
     sc.start();
     sc.stop();
+    SYLAR_LOG_INFO(GetLogger())<<"main over";
     return 0;
 }

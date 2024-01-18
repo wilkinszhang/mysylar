@@ -74,14 +74,13 @@ Fiber::Fiber(std::function<void()> cb,size_t stacksize,bool use_caller)//子协�
 Fiber::~Fiber(){
     --s_fiber_count;
     if(m_stack){
-        std::cout<<"子协程析构"<<std::endl;
+        // std::cout<<"子协程析构"<<std::endl;
         SYLAR_ASSERT(m_state==TERM || m_state==INIT || m_state==EXCEPT);
         StackAllocator::Dealloc(m_stack,m_stacksize);
     }else{
-        std::cout<<"主协程析构"<<std::endl;
+        // std::cout<<"主协程析构"<<std::endl;
         SYLAR_ASSERT(!m_cb);
         SYLAR_ASSERT(m_state==EXEC);
-
         Fiber* cur=t_fiber;
         if(cur==this){
             SetThis(nullptr);
@@ -110,6 +109,8 @@ void Fiber::reset(std::function<void()> cb){
 void Fiber::call(){//将上下文从当前线程主协程切换到调用call的协程上面
     SetThis(this);
     m_state=EXEC;
+    SYLAR_LOG_INFO(GetLogger())<<"Fiber::call id="<<m_id
+                                <<" total="<<s_fiber_count;
     if(swapcontext(&t_threadFiber->m_ctx,&m_ctx)){//swapcontext从第一个参数切换到第二个参数
         SYLAR_ASSERT2(false,"swapcontext");
     }
@@ -133,9 +134,20 @@ void Fiber::swapIn(){//将上下文从调度程序Scheduler的主协程切换到
 }
 //切换到后台（主线程）执行
 void Fiber::swapOut(){//将上下文从调用swapOut的协程切换到调度程序Scheduler的主协程
-    SetThis(t_threadFiber.get());
-    if(swapcontext(&m_ctx,&Scheduler::GetMainFiber()->m_ctx)){
-        SYLAR_ASSERT2(false,"swapcontext");
+    // SetThis(t_threadFiber.get());
+    // if(swapcontext(&m_ctx,&Scheduler::GetMainFiber()->m_ctx)){
+    //     SYLAR_ASSERT2(false,"swapcontext");
+    // }
+    if(this!=Scheduler::GetMainFiber()){
+        SetThis(Scheduler::GetMainFiber());
+        if(swapcontext(&m_ctx,&Scheduler::GetMainFiber()->m_ctx)){
+            SYLAR_ASSERT2(false,"swapcontext");
+        }
+    }else{
+        SetThis(t_threadFiber.get());
+        if(swapcontext(&m_ctx,&t_threadFiber->m_ctx)){
+            SYLAR_ASSERT2(false,"swapcontext");;
+        }
     }
 }
 void Fiber::SetThis(Fiber* f){
